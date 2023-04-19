@@ -1,4 +1,4 @@
-#8 Puzzle
+#### 8 Puzzle
 ## Author: Madeline Spawn
 ### Class: CS331 - SP23 - Intro to AI
 
