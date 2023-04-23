@@ -1,4 +1,5 @@
 from board import Board
+from agent import a_star_search
 import numpy as np
 import time
 
@@ -10,11 +11,13 @@ def main():
             board = Board(m, seed)
             
             start =  time.process_time()   
+
             '''
             ***********************************************
             Solve the Board state here with A*
             ***********************************************
             '''
+
             end =  time.process_time()
             solution_cpu_time = end-start
 

@@ -14,7 +14,7 @@ def MT(board: Board) -> int:
 
     correctboard = ([[1, 2, 3],
                      [4, 5, 6],
-                     [7, 8,0]])
+                     [7, 8, 0]])
 
     misplacedtiles= 0
     for row in range(3):
@@ -39,7 +39,6 @@ def CB(board: Board) -> int:
             tilecbd = getElement(Board[row][column], row, column)
             totalcbd += tilecbd
             
-        
     return totalcbd
 
 def NA(board: Board) -> int:
@@ -67,5 +66,44 @@ def getElement(num, row, col):
 '''
 A* Search 
 '''
+
+'''
+
+'''
 def a_star_search(board: Board, heuristic: Callable[[Board], int]):
-    return
+
+    solution = []
+    found = False
+
+    # flimit = h(start node)
+    flimit = 20
+    
+    # Repeat until solution found or no new nodes expanded
+    while not found:
+        if AStarRec(solution,Board, flimit) == True: return solution
+        else:
+            flimit += 10
+            AStarRec(solution, Board, flimit)
+    return None
+
+# Do a depth first search for all nodes where f(.)<= f-limit
+# Increase the f-limit to min f(.) over all leaf nodes
+
+
+'''
+
+
+'''
+
+def AStarRec(solution, Board, boundary):
+    if Board.goal_test: return True
+
+    else:
+        #check if we are within the boundary otherwise send false
+        # we need to expand and continue searching
+        print("else")
+
+    return False
+
+
+
