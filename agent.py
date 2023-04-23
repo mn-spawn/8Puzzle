@@ -16,14 +16,16 @@ def MT(board: Board) -> int:
                      [4, 5, 6],
                      [7, 8, 0]])
 
+    b = board.state
+
     misplacedtiles= 0
     for row in range(3):
         for column in range(3):
-            if Board[row][column] != correctboard[row][column]:
+            if b[row][column] != correctboard[row][column]:
                 misplacedtiles +=1
         
-    return misplacedtiles
 
+    return misplacedtiles
 
 def CB(board: Board) -> int:
     '''
@@ -31,20 +33,21 @@ def CB(board: Board) -> int:
     and sum to the total city block distance
     '''
     totalcbd = 0
+    b = board.state
 
     for row in range(3):
         for column in range(3):
             tilecbd = 0
 
-            tilecbd = getElement(Board[row][column], row, column)
+            tilecbd = getElement(b[row][column], row, column)
             totalcbd += tilecbd
-            
+
     return totalcbd
 
 def NA(board: Board) -> int:
     #my heuristic here
-    return 
-
+    print("NA")
+    return 0
 
 def getElement(num, row, col):
     ''' 
@@ -76,15 +79,15 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     found = False
 
     # flimit = h(start node)
-    flimit = 20
+    cheapest = heuristic(board)
+    flimit = cheapest 
+
+    print(board)
     
     # Repeat until solution found or no new nodes expanded
     while not found:
-        if AStarRec(solution,Board, flimit) == True: return solution
-        else:
-            flimit += 10
-            AStarRec(solution, Board, flimit)
-    return None
+        if AStarRec(solution, board, flimit, cheapest) == True: return solution
+        else: return []
 
 # Do a depth first search for all nodes where f(.)<= f-limit
 # Increase the f-limit to min f(.) over all leaf nodes
@@ -95,13 +98,23 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
 '''
 
-def AStarRec(solution, Board, boundary):
-    if Board.goal_test: return True
+def AStarRec(solution, board: Board, boundary, cheapest):
+    if board.goal_test(): return True
+    currCost = len(solution)
+    flimit = currCost + cheapest
 
-    else:
-        #check if we are within the boundary otherwise send false
+    moveList = board._possible_moves()
+    print(moveList)
+
+    if flimit > boundary:
+        boundary = flimit
+    #else:
+        # check if we are within the boundary otherwise send false
         # we need to expand and continue searching
-        print("else")
+    
+    
+        # for i in range(successors):
+        #     print
 
     return False
 
