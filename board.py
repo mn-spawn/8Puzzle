@@ -34,7 +34,6 @@ class Board:
     def goal_test(self) -> bool:
         return str(self.state) == str(self.solution)
     
-
     '''
     This function allows you to check if a solution (list of directions) correctly solves the current board state 
 

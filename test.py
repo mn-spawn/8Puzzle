@@ -15,12 +15,16 @@ def test(heuristic):
 
     #for i, (m, s) in enumerate(zip([10,20,30,40,50], [21, 77, 39, 8, 402])):
 
-    for i, (m, s) in enumerate(zip([10], [21])):
+    for i, (m, s) in enumerate(zip([20], [77])):
 
         board = Board(m,s)
+        print(board)
 
         solution = a_star_search(board, heuristic)
         correct = board.check_solution(solution)
+
+        print("optimal")
+        print(optimal_solutions[f"{m}:{s}"])
 
         if correct:
             if len(solution) == len(optimal_solutions[f"{m}:{s}"]):
@@ -35,25 +39,24 @@ print("Tests for MT Heuristic")
 try:
     test(MT)
 except Exception as e:
+    print(e)
+print()
+
+print("Test for CB Heuristic")
+try:
+    test(CB)
+except Exception as e:
     print("The following Error has occured")
     print(e)
 print()
 
-# print("Test for CB Heuristic")
-# try:
-#     test(CB)
-# except Exception as e:
-#     print("The following Error has occured")
-#     print(e)
-# print()
-
-# print("Test for NA Heuristic")
-# try:
-#     test(NA)
-# except Exception as e:
-#     print("The following Error has occured")
-#     print(e)
-# print()
+print("Test for NA Heuristic")
+try:
+    test(NA)
+except Exception as e:
+    print("The following Error has occured")
+    print(e)
+print()
 
 
             
