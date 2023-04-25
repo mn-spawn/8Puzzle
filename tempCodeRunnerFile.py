@@ -1,1 +1,0 @@
-['left', 'up', 'up', 'left', 'down', 'down', 'right', 'up', 'up', 'left']

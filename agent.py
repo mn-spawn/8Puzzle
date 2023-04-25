@@ -70,53 +70,78 @@ def getElement(num, row, col):
 A* Search 
 '''
 
-'''
-
-'''
 def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
     solution = []
-    found = False
-
-    # flimit = h(start node)
-    cheapest = heuristic(board)
-    flimit = cheapest 
-
-    print(board)
+    found = False 
     
-    # Repeat until solution found or no new nodes expanded
-    while not found:
-        if AStarRec(solution, board, flimit, cheapest) == True: return solution
-        else: return []
+    closedcases = [board]
+    limit = 0
+    gscore = 0
 
-# Do a depth first search for all nodes where f(.)<= f-limit
-# Increase the f-limit to min f(.) over all leaf nodes
+    while not found and limit != 2:
+        # if we found our goal state return 
+        if board.goal_test == True: found = True
 
+        # expand nodes and keep looking
+        else: 
+            #nodes we're testing
+            possiblemoves = board._possible_moves()
+            nextstates = board.next_action_states()
 
-'''
+            #test nodes using heuristic
+            minfscore = float('inf')
+            length = len(nextstates)
 
+            # print("current board: ")
+            # print(board)
+            bestmove = None
 
-'''
+            for i in range(length):
+                teststate = nextstates[i]
+                testboard = teststate[0]
+                testval = heuristic(testboard)
+                #print("possible board")
+                #print(teststate[0])
+                #print(possiblemoves)
+                
+                
+                new = newCase(closedcases, testboard)
+                fscore = gscore + testval
+                # print("h val: " + str(testval) + " + g val: " + str(gscore) + " = fscore: " + str(fscore))
+                # print("will move if " + str(fscore) + " is less than " + str(minfscore) + " and newCase is true it is: " + str(new))
+                
+                if fscore <= minfscore and new == True:
+                    print("setting good move" + str(i))
+                    minfscore = fscore
+                    closedcases.append(testboard)
+                    goodmove = i
+            
 
-def AStarRec(solution, board: Board, boundary, cheapest):
-    if board.goal_test(): return True
-    currCost = len(solution)
-    flimit = currCost + cheapest
+            nextmove = possiblemoves[goodmove]
+            newboard = board._move(nextmove[0])
+            solution.append(nextmove[1])
+            limit+=1
+            gscore+=1
 
-    moveList = board._possible_moves()
-    print(moveList)
+            print("solution: "+ str(solution))
+            board = newboard
 
-    if flimit > boundary:
-        boundary = flimit
-    #else:
-        # check if we are within the boundary otherwise send false
-        # we need to expand and continue searching
-    
-    
-        # for i in range(successors):
-        #     print
+            print("new board")
+            print(board)
 
-    return False
+    return solution
 
+def newCase(closedcases, board: Board):
+    length = len(closedcases)
 
+    for i in range(length):
+        print(board)
+        print(closedcases[i])
+        print("\n")
+        print("\n")
+        if board == closedcases[i]:
+            print("SAME")
+            return False
+    return True
 
