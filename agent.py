@@ -124,13 +124,14 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     #what we've seen
     seenstates = {str(board): True}
 
-    solution = []
-
     #run while the PQ is not empty
     while frontier.empty() == False or found == True:
         #pop our node
         boardtuple = frontier.get()
         testboard = boardtuple[2]
+
+        #put it into the seenstate
+        seenstates[str(testboard)] = True
         parentsolution = boardtuple[3]
 
         if testboard.goal_test() == True:
@@ -150,6 +151,8 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                     #calculate
                     fscore = gscore + heuristic(child)
                     childsol = parentsolution + [move]
+
+                    #put child into frontier
                     frontier.put((fscore, j, child, childsol))
                     j+=1
 
