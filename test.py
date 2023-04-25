@@ -13,7 +13,6 @@ def test(heuristic):
         "50:402":['up','up','left','down','down','right','up','left','left','up','right','right','down','left','down','right','up','left','left','up']
     }
 
-    # for i, (m, s) in enumerate(zip([10,20,30,40,50], [21, 77, 39, 8, 402])):
     for i, (m, s) in enumerate(zip([10,20,30,40,50], [21, 77, 39, 8, 402])):
 
         board = Board(m,s)
@@ -30,20 +29,20 @@ def test(heuristic):
             print(f"Incorrect soultion for problem {i} where m={m} and s={s}")
 
 
-# print("Tests for MT Heuristic")
-# try:
-#     test(MT)
-# except Exception as e:
-#     print(e)
-# print()
+print("Tests for MT Heuristic")
+try:
+    test(MT)
+except Exception as e:
+    print(e)
+print()
 
-# print("Test for CB Heuristic")
-# try:
-#     test(CB)
-# except Exception as e:
-#     print("The following Error has occured")
-#     print(e)
-# print()
+print("Test for CB Heuristic")
+try:
+    test(CB)
+except Exception as e:
+    print("The following Error has occured")
+    print(e)
+print()
 
 print("Test for NA Heuristic")
 try:
