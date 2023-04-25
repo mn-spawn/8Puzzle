@@ -4,8 +4,6 @@ from collections.abc import Callable
 from queue import PriorityQueue
 import numpy as np
 
-
-
 '''
 Heuristics
 '''
@@ -104,140 +102,59 @@ def retCorrect(num):
         elif num == 8: return (2,1)
         elif num == 0: return (2,2)
 
-
 '''
 A* Search 
 '''
 
 def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
-    solution = []
-    found = False 
-    
-    closedcases = [board]
-    limit = 0
+    #initialize the frontier PQ and add first state
+    frontier = PriorityQueue()
+
+    #put in our fscore, tiebreak, board, and solution
+    frontier.put((heuristic(board), 0, board, []))
+
+    #will be set once we've found solution
+    found = False
+
+    #distance from start node and our entry counter (initial was 0)
     gscore = 0
-    initboard = board
+    j = 1
 
-    while not found and limit != 10:
-        # if we found our goal state return 
-        if board.goal_test == True: found = True
+    #what we've seen
+    seenstates = {str(board): True}
 
-        # expand nodes and keep looking
-        else: 
-            #nodes we're testing
-            possiblemoves = board._possible_moves()
-            nextstates = board.next_action_states()
-            
+    solution = []
 
-            #test nodes using heuristic
-            minfscore = float('inf')
-            length = len(nextstates)
+    #run while the PQ is not empty
+    while frontier.empty() == False or found == True:
+        #pop our node
+        boardtuple = frontier.get()
+        testboard = boardtuple[2]
+        parentsolution = boardtuple[3]
 
-            bestmove = None
+        if testboard.goal_test() == True:
+            solution = boardtuple[3]
+            break
 
-            for i in range(length):
-                teststate = nextstates[i]
-                testboard = teststate[0]
-                testval = heuristic(testboard)
-                 
-                new = newCase(closedcases, testboard)
-                fscore = gscore + testval
-                
-                if fscore <= minfscore and new == True:
-                    minfscore = fscore
-                    closedcases.append(testboard)
-                    bestmove = i
-            
+        else:
+            # get children
+            children = testboard.next_action_states()
 
-            nextmove = possiblemoves[bestmove]
-            newboard = board._move(nextmove[0])
-            solution.append(nextmove[1])
-            limit+=1
-            gscore+=1
+            #check if we've seen
+            for i in children:
+                child = i[0]
+                move = i[1]
 
-            board = newboard
+                if str(child) not in seenstates:
+                    #calculate
+                    fscore = gscore + heuristic(child)
+                    childsol = parentsolution + [move]
+                    frontier.put((fscore, j, child, childsol))
+                    j+=1
 
-    print(solution)
-    print(initboard.check_solution(solution))
+        #increase the distance from init to current node
+        gscore+=1
+
     return solution
-
-
-'''
-Down here are helper functions
-'''
-def newCase(closedcases, board: Board):
-    '''
-    this tests if the board state is new or not
-    '''
-    length = len(closedcases)
-
-    for i in range(length):
-        if compare(board, closedcases[i]) == True:
-            return False
-    return True
     
-def compare(self, other):
-    '''
-    This compares a board states to each other
-    '''
-    if isinstance(other, Board):
-        return np.array_equal(self.state, other.state)
-    return False
-
-
-
-############################## other version ######################################
-    # solution = []
-
-    # searching = True
-    # limit = 0
-    # gscore = 0
-    
-    # opencases = []
-    # opencases.append(((heuristic(board)+gscore), board, 'init'))
-    # print(opencases)
-
-    # print(board)
-
-    # closedcases = []
-
-
-    # while searching and limit != 30:
-    #     holdboard = opencases[0]
-    #     opencases.pop(0)
-    #     board = holdboard[1]
-
-    #     if holdboard[2] != 'init':
-    #         solution.append(holdboard[2])
-
-    #     if board.goal_test() == True: 
-    #         searching = False
-
-    #     else:
-    #         possiblemoves = board._possible_moves()
-    #         print(possiblemoves)
-    #         movestates = board.next_action_states()
-    #         numofmoves = len(possiblemoves)
-
-    #         for i in range(numofmoves):
-    #             teststate = movestates[i]
-    #             state = teststate[0]
-                
-    #             move = possiblemoves[i]
-    #             movestring = move[1]
-
-    #             new = newCase(closedcases, state)
-
-    #             if new == True:
-    #                 opencases.append(((heuristic(state)+gscore), state, movestring))
-
-
-    #         closedcases.append(board)
-    #         opencases.sort(key=lambda a: a[0])
-
-    #         gscore += 1
-    #         limit += 1
-
-    # print(solution)
-    # return solution
