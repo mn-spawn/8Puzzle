@@ -1,6 +1,7 @@
 from __future__ import annotations
 from board import Board
 from collections.abc import Callable
+import numpy as np
 
 
 '''
@@ -79,7 +80,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     limit = 0
     gscore = 0
 
-    while not found and limit != 2:
+    while not found and limit != 10:
         # if we found our goal state return 
         if board.goal_test == True: found = True
 
@@ -102,23 +103,22 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                 testboard = teststate[0]
                 testval = heuristic(testboard)
                 #print("possible board")
-                #print(teststate[0])
+                print(teststate[0])
                 #print(possiblemoves)
-                
-                
+                                
                 new = newCase(closedcases, testboard)
                 fscore = gscore + testval
-                # print("h val: " + str(testval) + " + g val: " + str(gscore) + " = fscore: " + str(fscore))
-                # print("will move if " + str(fscore) + " is less than " + str(minfscore) + " and newCase is true it is: " + str(new))
+                print("h val: " + str(testval) + " + g val: " + str(gscore) + " = fscore: " + str(fscore))
+                print("will move if " + str(fscore) + " is less than " + str(minfscore) + " and newCase is true it is: " + str(new))
                 
                 if fscore <= minfscore and new == True:
                     print("setting good move" + str(i))
                     minfscore = fscore
                     closedcases.append(testboard)
-                    goodmove = i
+                    bestmove = i
             
 
-            nextmove = possiblemoves[goodmove]
+            nextmove = possiblemoves[bestmove]
             newboard = board._move(nextmove[0])
             solution.append(nextmove[1])
             limit+=1
@@ -133,15 +133,20 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     return solution
 
 def newCase(closedcases, board: Board):
+    '''
+    this tests if the board state is new or not
+    '''
     length = len(closedcases)
 
     for i in range(length):
-        print(board)
-        print(closedcases[i])
-        print("\n")
-        print("\n")
-        if board == closedcases[i]:
-            print("SAME")
+        if compare(board, closedcases[i]) == True:
             return False
     return True
-
+    
+def compare(self, other):
+    '''
+    This compares a board states to each other
+    '''
+    if isinstance(other, Board):
+        return np.array_equal(self.state, other.state)
+    return False
