@@ -110,6 +110,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
     #initialize the frontier PQ and add first state
     frontier = PriorityQueue()
+    initboard = board
 
     #put in our fscore, tiebreak, board, and solution
     frontier.put((heuristic(board), 0, board, []))
@@ -126,6 +127,9 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
     #run while the PQ is not empty
     while frontier.empty() == False or found == True:
+        #bounding
+        if j == 500000: break
+        
         #pop our node
         boardtuple = frontier.get()
         testboard = boardtuple[2]
@@ -159,5 +163,5 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
         #increase the distance from init to current node
         gscore+=1
 
-    return solution
+    return (j, len(solution), initboard.check_solution(solution))
     
