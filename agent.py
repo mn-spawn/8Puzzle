@@ -103,6 +103,12 @@ def retCorrect(num):
         elif num == 0: return (2,2)
 
 '''
+Helper heuristic for BFS
+    
+'''
+def BFS(board: Board) -> int: return 0
+
+'''
 A* Search 
 '''
 
@@ -118,6 +124,7 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
     found = False
 
     #distance from start node and our entry counter (initial was 0)
+    solution = []
     gscore = 0
     j = 1
 
@@ -126,6 +133,10 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
 
     #run while the PQ is not empty
     while frontier.empty() == False or found == True:
+        if frontier.qsize() >= 400000: 
+            solution = ['FAIL']
+            break;
+
         #pop our node
         boardtuple = frontier.get()
         testboard = boardtuple[2]
@@ -155,9 +166,12 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
                     #put child into frontier
                     frontier.put((fscore, j, child, childsol))
                     j+=1
+                    
 
         #increase the distance from init to current node
         gscore+=1
 
+    #here I print j if running main to see the nodes
+    # print(j)
     return solution
     
