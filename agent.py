@@ -130,9 +130,9 @@ def a_star_search(board: Board, heuristic: Callable[[Board], int]):
         boardtuple = frontier.get()
         testboard = boardtuple[2]
 
-        #put it into the seenstate
+        #put it into the seenstate, shallow copy parentsolution
         seenstates[str(testboard)] = True
-        parentsolution = boardtuple[3]
+        parentsolution = boardtuple[3].copy()
 
         if testboard.goal_test() == True:
             solution = boardtuple[3]
